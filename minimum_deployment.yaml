@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exemplo-deployment
+spec:
+  selector:
+    matchLabels:
+      app: exemplo
+  replicas: 1 # quantidade de pods que devem ser criados
+  template:
+    metadata:
+      labels:
+        app: exemplo
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+      - name: exemplo-app
+        image: xavero/weather:1.0.0
+        ports:
+        - name: web
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: web
+        resources:
+            requests: 
+              memory: 20Mi
+              cpu: 10m # 1% de uma cpu
+            limits: 
+              memory: 100Mi
+              cpu: 500m # 50% de uma cpu
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://0.0.0.0:80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exemplo-service
+  labels:
+    app: exemplo
+spec:
+  type: NodePort
+  ports:
+  - name: web
+    port: 80
+    protocol: TCP
+    targetPort: web
+    nodePort: 32000
+  selector:
+    app: exemplo

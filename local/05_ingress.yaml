@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: generic-ingress  # k8s version < 1.18.0
+  name: examplo-ingress
+  namespace: exemplo-ns
+spec:
+  # ingressClassName: generic-ingress #  k8s version >= 1.18.0
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: exemplo-service
+          servicePort: web

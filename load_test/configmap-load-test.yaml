@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: load-test-configmap
+  namespace: exemplo-ns
+data:
+  load-test.js: |
+    import http from "k6/http";
+    export default function() {
+        http.get("http://exemplo-service/weatherforecast");
+    };

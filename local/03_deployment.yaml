@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exemplo-deployment
+  namespace: exemplo-ns
+spec:
+  selector:
+    matchLabels:
+      app: exemplo
+  replicas: 2 # quantidade de pods que devem ser criados. Ignorado quando usa HorizontalPodAutoscaler
+  template:
+    metadata:
+      labels:
+        app: exemplo
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+      - name: exemplo-app
+        image: xavero/weather:3.0.0
+        ports:
+        - name: web
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: web
+          initialDelaySeconds: 10
+          failureThreshold: 2
+          periodSeconds: 3
+          timeoutSeconds: 10
+        resources:
+            requests: 
+              memory: 150Mi
+              cpu: 10m # 1% de uma cpu
+            limits: 
+              memory: 150Mi
+              cpu: 500m # 50% de uma cpu
+        env:
+        - name: ASPNETCORE_URLS
+          valueFrom:
+            configMapKeyRef:
+              name: exemplo-configmap
+              key: listen_url
+        volumeMounts:
+          - name: config
+            mountPath: /app/appsettings.Production.json
+            subPath: appsettings.Production.json
+      volumes: 
+      - name: config
+        configMap: 
+          name: exemplo-configmap

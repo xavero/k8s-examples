@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: load-test-job
+  namespace: exemplo-ns
+spec:
+  template:
+    spec:
+      containers:
+      - name: k6
+        image: loadimpact/k6
+        args: ["run",  "--duration", "30m", "--vus", "150", "/app/load-test.js"]
+        volumeMounts:
+          - name: configmap
+            mountPath: /app/load-test.js
+            subPath: load-test.js
+      restartPolicy: Never
+      volumes: 
+      - name: configmap
+        configMap: 
+          name: load-test-configmap
