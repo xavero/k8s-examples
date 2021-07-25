@@ -1,0 +1,63 @@
+## Install with helm: 
+##    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+##    helm repo update
+##    helm install nginx-ingress-proxy -f nginx-ingress-controller-values.yaml ingress-nginx/ingress-nginx --namespace ingress --create-namespace --atomic
+
+## nginx configuration
+## Ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/index.md
+##
+
+controller:
+  name: controller
+  image:
+    registry: k8s.gcr.io
+    image: ingress-nginx/controller
+    tag: "v0.47.0"
+
+  ## Name of the ingress class to route through this controller
+  ##
+  ingressClass: generic-ingress
+
+  # This section refers to the creation of the IngressClass resource
+  # IngressClass resources are supported since k8s >= 1.18
+  ingressClassResource:
+    enabled: true
+    default: true
+
+  ## Allows customization of the source of the IP address or FQDN to report
+  ## in the ingress status field. By default, it reads the information provided
+  ## by the service. If disable, the status field reports the IP address of the
+  ## node or nodes where an ingress controller pod is running.
+  publishService:
+    enabled: true
+
+  ## DaemonSet or Deployment
+  ##
+  kind: Deployment
+  replicaCount: 1
+  minAvailable: 1
+
+  # Define requests resources to avoid probe issues due to CPU utilization in busy nodes
+  # ref: https://github.com/kubernetes/ingress-nginx/issues/4735#issuecomment-551204903
+  # Ideally, there should be no limits.
+  # https://engineering.indeedblog.com/blog/2019/12/cpu-throttling-regression-fix/
+  resources:
+  #  limits:
+  #    cpu: 100m
+  #    memory: 90Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 90Mi
+
+  service:
+    enabled: true
+    type: LoadBalancer
+
+  metrics:
+    port: 10254
+    # if this port is changed, change healthz-port: in extraArgs: accordingly
+    enabled: true
+
+    serviceMonitor:
+      enabled: false
+      namespace: "monitoring"

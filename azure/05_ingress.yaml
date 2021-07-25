@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing  # k8s version < 1.18.0
+  name: examplo-ingress
+  namespace: example-ns
+spec:
+  # ingressClassName: addon-http-application-routing #  k8s version >= 1.18.0
+  rules:
+  - host: example.7d720bf1eb554631aa87.brazilsouth.aksapp.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: example-service
+            port:
+              name: http

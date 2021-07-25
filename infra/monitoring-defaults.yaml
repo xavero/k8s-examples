@@ -14,6 +14,6 @@ spec:
   namespaceSelector:
     any: true
   endpoints:
-  - port: web
+  - port: http
     path: /metrics-text
     interval: 5s

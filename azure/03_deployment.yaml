@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-deployment
+  namespace: example-ns
+spec:
+  selector:
+    matchLabels:
+      app: example
+  replicas: 1 # quantidade de pods que devem ser criados
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+      - name: example-app
+        image: xavero/weather:4.0.0 # usar versão 4.0.0 para demo do autoscale
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 10
+          failureThreshold: 2
+          periodSeconds: 3
+          timeoutSeconds: 10
+        resources:
+            requests: 
+              memory: 350Mi
+              cpu: 10m # 1% de uma cpu
+            limits: 
+              memory: 350Mi
+              cpu: 250m # 25% de uma cpu
+        env:
+        - name: ASPNETCORE_URLS
+          valueFrom:
+            configMapKeyRef:
+              name: example-configmap
+              key: listen_url
+        volumeMounts:
+          - name: config
+            mountPath: /app/appsettings.Production.json
+            subPath: appsettings.Production.json
+      volumes: 
+      - name: config
+        configMap: 
+          name: example-configmap

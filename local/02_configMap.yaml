@@ -1,8 +1,12 @@
+## ConfigMaps são usados para configurações. Podem representar arquivos inteiros
+## ou campos com chave e valor para serem configuradas como variáveis de ambiente.
+## Podemos conectar mais de um ConfigMap em nossos pods
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: exemplo-configmap
-  namespace: exemplo-ns
+  name: example-configmap
+  namespace: example-ns
 data:
   appsettings.Production.json: |
     {
@@ -21,3 +25,23 @@ data:
       }
     }
   listen_url: http://0.0.0.0:80
+
+---
+## Secrets são arquivos guardados criptografados e com acesso restrito no Kubernetes.
+## Podem ser inseridos nos pods como variável de ambiente ou arquivos (via volume).
+## Secrets não devem ser salvos no git!
+## Exemplo de criação de secret: 
+##   kubectl create secret generic example-secret \
+##     --namespace example-ns
+##     --from-literal username="nome usuario"
+##     --from-literal password="senha usuario"
+##     --from-file=users="/foo/bar/passwords"
+apiVersion: v1
+kind: Secret
+metadata:
+  name: example-secret
+  namespace: example-ns
+type: Opaque
+data:
+  ## segredo é representado em base64. Contém usuario e senha test/test
+  users: dGVzdDokYXByMSRuZTlJRVpmTSRCeE5Jdm9ZU0prallkLjZ6WUhnUlMuCg==

@@ -1,0 +1,55 @@
+## Configuration for alertmanager
+## ref: https://prometheus.io/docs/alerting/alertmanager/
+##
+alertmanager:
+
+  ingress:
+    enabled: true
+
+    # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
+    # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+    ingressClassName:
+    annotations: 
+      kubernetes.io/ingress.class: addon-http-application-routing
+    ## Hosts must be provided if Ingress is enabled.
+    ##
+    hosts:
+      - alertmanager.7d720bf1eb554631aa87.brazilsouth.aksapp.io
+
+## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+##
+grafana:
+  ingress:
+    ## If true, Grafana Ingress will be created
+    ##
+    enabled: true
+    
+    ingressClassName:
+    annotations: 
+      kubernetes.io/ingress.class: addon-http-application-routing
+
+    ## Hostnames.
+    ## Must be provided if Ingress is enable.
+    ##
+    hosts:
+      - grafana.7d720bf1eb554631aa87.brazilsouth.aksapp.io
+
+## Deploy a Prometheus instance
+##
+prometheus:
+  ingress:
+    enabled: true
+
+    ingressClassName:
+    annotations: 
+      kubernetes.io/ingress.class: addon-http-application-routing
+
+    ## Hostnames.
+    ## Must be provided if Ingress is enabled.
+    ##
+    hosts:
+      - prometheus.7d720bf1eb554631aa87.brazilsouth.aksapp.io
+
+prometheus-node-exporter:
+#  namespaceOverride: "monitoring"
+  hostRootFsMount: true

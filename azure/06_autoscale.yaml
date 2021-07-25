@@ -1,0 +1,26 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: example-hpa
+  namespace: example-ns
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: example-deployment
+  minReplicas: 2
+  maxReplicas: 50
+  metrics:
+  - type: Pods
+    pods:
+      metric:
+        name: application_httprequests_active
+      target:
+        type: AverageValue
+        averageValue: "10"
+  # - type: Resource
+  #   resource:
+  #     name: cpu
+  #     target:
+  #       type: Utilization
+  #       averageUtilization: 50

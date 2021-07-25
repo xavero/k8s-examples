@@ -1,52 +1,100 @@
+## Deployments são responsáveis de criar os Pods das aplicações, fazer a troca dos Pods ao trocar a versão,
+## recriar os pods que forem excluídos, entre outras configurações.
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exemplo-deployment
-  namespace: exemplo-ns
+  name: example-deployment
+  namespace: example-ns
 spec:
   selector:
+    ## Indica quais Pods este Deployment controla
     matchLabels:
-      app: exemplo
-  replicas: 2 # quantidade de pods que devem ser criados. Ignorado quando usa HorizontalPodAutoscaler
+      app: example
+
+  ## quantidade de pods que devem ser criados. Ignorado quando se usa o HorizontalPodAutoscaler
+  replicas: 1 
+
   template:
     metadata:
+      ## labels da aplicação. Usado para filtrar os Pods que fazem parte do Deployment
       labels:
-        app: exemplo
+        app: example
+
     spec:
+      ## restringe em quais servidores a aplicação pode executar
       nodeSelector:
         kubernetes.io/os: linux
+      
+      ## declaração dos volumes que podem ser usados nos containers do Pod
+      volumes: 
+      
+      ## exemplo usando um arquivo que foi declarado em um ConfigMap
+      - name: config
+        configMap: 
+          name: example-configmap
+      
+      ## exemplo usando um arquivo que foi decalrado como Secret
+      - name: secrets
+        secret: 
+          secretName: example-secret
+
+      ## containers que serão executados dentro deste pod
       containers:
-      - name: exemplo-app
-        image: xavero/weather:3.0.0
+      - name: example-app
+        image: xavero/weather:4.0.0 # usar versão 4.0.0 para demo do autoscale
+        
         ports:
-        - name: web
+        ## nomeando a porta permite usar esse nome no service, ao invés do número da porta
+        - name: http
           containerPort: 80
+        
+        ## rota que o k8s usará para checar se a aplicação está funcionando
         livenessProbe:
           httpGet:
             path: /healthz
-            port: web
+            port: http
           initialDelaySeconds: 10
           failureThreshold: 2
           periodSeconds: 3
           timeoutSeconds: 10
+        
+        ## limites de cpu e memória.
+        ## O ideal é que nenhum Deployment suba sem definir estes limites
         resources:
-            requests: 
-              memory: 150Mi
-              cpu: 10m # 1% de uma cpu
-            limits: 
-              memory: 150Mi
-              cpu: 500m # 50% de uma cpu
+          ## quantidade mínima que a aplicação precisa para subir.
+          ## Se nenhum Node no cluster tiver esse mínimo disponível, o pod ficará pendente!
+          requests: 
+            memory: 150Mi
+            cpu: 10m ## 1% de uma cpu
+          
+          ## quantidade máxima que a aplicação pode usar. 
+          ## Se o pod ultrapassar esses valores, o k8s o reiniciará.
+          limits: 
+            memory: 150Mi
+            cpu: 100m ## 10% de uma cpu
+        
+        ## configurações de variáveis de ambiente
         env:
+        
+        ## usando um valor do configMap
         - name: ASPNETCORE_URLS
           valueFrom:
             configMapKeyRef:
-              name: exemplo-configmap
+              name: example-configmap
               key: listen_url
+        
+        ## declarando o valor que será usado nesse arquivo mesmo.
+        - name: EXAMPLE_VAR
+          value: example_value
+
+        ## configurações de volumes/persistência
         volumeMounts:
+          ## é possível mapear para dentro do container um único arquivo...
           - name: config
-            mountPath: /app/appsettings.Production.json
             subPath: appsettings.Production.json
-      volumes: 
-      - name: config
-        configMap: 
-          name: exemplo-configmap
+            mountPath: /app/appsettings.Production.json
+          ##  ou uma pasta inteira
+          - name: secrets
+            # subPath: users
+            mountPath: /secrets

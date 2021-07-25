@@ -1,0 +1,14 @@
+## Install with helm: 
+##  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+##  helm repo update
+##  helm install prometheus-adapter prometheus-community/prometheus-adapter -f prometheus-adapter-values.yaml --namespace monitoring --create-namespace --atomic
+
+image:
+  repository: directxman12/k8s-prometheus-adapter-amd64
+  tag: v0.8.4
+
+# Url to access prometheus
+prometheus:
+  # Value is templated
+  url: http://prometheus-stack-kube-prom-prometheus.monitoring.svc
+  port: 9090

@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: exemplo-deployment
+  name: example-deployment
 spec:
   selector:
     matchLabels:
-      app: exemplo
-  replicas: 1 # quantidade de pods que devem ser criados
+      app: example
+  replicas: 2 # quantidade de pods que devem ser criados
   template:
     metadata:
       labels:
-        app: exemplo
+        app: example
     spec:
       nodeSelector:
         kubernetes.io/os: linux
       containers:
-      - name: exemplo-app
-        image: xavero/weather:1.0.0
+      - name: example-app
+        image: xavero/weather:4.0.0
         ports:
-        - name: web
+        - name: http
           containerPort: 80
         livenessProbe:
           httpGet:
             path: /healthz
-            port: web
+            port: http
         resources:
             requests: 
               memory: 20Mi
@@ -34,20 +34,22 @@ spec:
         env:
         - name: ASPNETCORE_URLS
           value: http://0.0.0.0:80
+          
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: exemplo-service
+  name: example-service
   labels:
-    app: exemplo
+    app: example
 spec:
   type: NodePort
   ports:
-  - name: web
+  - name: http
     port: 80
     protocol: TCP
-    targetPort: web
+    targetPort: http
     nodePort: 32000
   selector:
-    app: exemplo
+    app: example

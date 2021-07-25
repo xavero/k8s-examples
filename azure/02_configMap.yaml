@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-configmap
+  namespace: example-ns
+data:
+  appsettings.Production.json: |
+    {
+      "Logging": {
+        "LogLevel": {
+          "Default": "Warning",
+          "Microsoft": "Warning",
+          "Microsoft.Hosting.Lifetime": "Information"
+        }
+      },
+      "AllowedHosts": "*",
+      "MetricsWebTrackingOptions": {
+          "ApdexTrackingEnabled": true,
+          "ApdexTSeconds": 0.2,
+          "IgnoredHttpStatusCodes": [ 404, 500 ]
+      }
+    }
+  listen_url: http://0.0.0.0:80

@@ -1,4 +1,9 @@
+## Namespaces podem ser usados para separar um grupo de aplicações.
+## Permissões de ações dos usuários são definidas por namespace.
+## Exemplos de casos: namespaces production e staging, 
+##   namespaces por aplicação ou área de negócio (ecommerce, backoffice, marketing, shared-services, etc)
+
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: exemplo-ns
+  name: example-ns

@@ -2,18 +2,27 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: load-test-job
-  namespace: exemplo-ns
+  namespace: example-ns
 spec:
   template:
     spec:
       containers:
       - name: k6
         image: loadimpact/k6
+        # simula 150 usuários por 30 minutos.
         args: ["run",  "--duration", "30m", "--vus", "150", "/app/load-test.js"]
         volumeMounts:
           - name: configmap
             mountPath: /app/load-test.js
             subPath: load-test.js
+        resources:
+          requests: 
+            memory: 150Mi
+            cpu: 100m # 10% de uma cpu
+          limits: 
+            memory: 150Mi
+            cpu: 100m # 10% de uma cpu
+
       restartPolicy: Never
       volumes: 
       - name: configmap

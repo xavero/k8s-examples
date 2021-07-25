@@ -1,23 +1,37 @@
+## Configuração para escalar a quantidade de Pods da aplicação automaticamente.
+## Quando configuramos esse objeto, a propriedade Replicas no Deployment é ignorada.
+
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: exemplo-hpa
-  namespace: exemplo-ns
+  name: example-hpa
+  namespace: example-ns
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: exemplo-deployment
-  minReplicas: 3
-  maxReplicas: 10
+    name: example-deployment
+
+  ## Quantidade minima de Pods. Substitui o valor configurado no objeto Deployment.
+  minReplicas: 1
+  maxReplicas: 6
+ 
   metrics:
+  ## Usar uma métrica customizada que a aplicação informa em um endpoint de metricas.
+  ## Isso é possível usando o prometheus e o prometheus-adapter
   - type: Pods
     pods:
       metric:
         name: application_httprequests_active
       target:
+        ## Se o valor médio de requisições por Pod estiver acima de 10,
+        ## o AutoScaler irá aumentar a quantidade de Pods até chegar na média.
+        ## Se estiver abaixo, o AutoScaler irá diminuir a quantidade de Pods.
         type: AverageValue
         averageValue: "10"
+  
+  ## Usar métrica da cpu para definir se o k8s deve acionar o autoscale
+  ## Cpu é coletada automaticamente pelo k8s. 
   # - type: Resource
   #   resource:
   #     name: cpu

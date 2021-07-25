@@ -1,17 +1,23 @@
+## Services são responsáveis por criar um DNS e Ip Interno fixo para os Pods.
+## Quando há mais de um Pod para a aplicação, o Service também pode fazer o LoadBalance entre os Pods.
+## Outros pods no mesmo cluster podem acessar este service através de seu nome ( ou nome + namespace para pods em outro namespace):
+##   Ex: curl http://exemplo-service.exemplo-ns/
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: exemplo-service
-  namespace: exemplo-ns
+  name: example-service
+  namespace: example-ns
   labels:
-    app: exemplo
+    app: example
     monitoring: metrics-text
 spec:
   type: ClusterIP
   ports:
-  - name: web
+  - name: http
     port: 80
     protocol: TCP
-    targetPort: web
+    targetPort: http
+  ## seleciona quais pods o Service irá usar através de labels
   selector:
-    app: exemplo
+    app: example

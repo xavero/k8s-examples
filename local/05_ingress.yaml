@@ -1,17 +1,30 @@
-apiVersion: networking.k8s.io/v1beta1
+## Ingress são configuração para o Proxy Http do cluster. 
+## As requisições feitas são direcionadas para o Service correto de acordo 
+## com os vários arquivos de configuração Ingress.
+## Um arquivo pode possuir mais de um DNS, ou é possível separar em diversos arquivos.
+## É possível configurar mais de um Proxy Http para o cluster.
+
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    kubernetes.io/ingress.class: generic-ingress  # k8s version < 1.18.0
-  name: examplo-ingress
-  namespace: exemplo-ns
+  ## para o k8s versão < 1.18.0, usamos a anotação abaixo para indicar 
+  ## qual proxy configurado no cluster deve ser usado
+  # annotations:
+  #   kubernetes.io/ingress.class: generic-ingress  # 
+  name: example-ingress
+  namespace: example-ns
 spec:
-  # ingressClassName: generic-ingress #  k8s version >= 1.18.0
+  ## para o k8s versão >= 1.18.0, usamos a propriedade abaixo para
+  ## indicar qual proxy configurado no cluster deve ser usado
+  ingressClassName: generic-ingress 
   rules:
-  - host: localhost
+  - host: example.127-0-0-1.nip.io
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: exemplo-service
-          servicePort: web
+          service:
+            name: example-service
+            port:
+              name: http
