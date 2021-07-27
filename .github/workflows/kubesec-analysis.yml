@@ -11,10 +11,9 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ main ]
-  workflow_run:
-    branches: [ main ]
   schedule:
     - cron: '15 1 * * 1'
+  workflow_dispatch:
 
 jobs:
   lint:
