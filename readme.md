@@ -168,8 +168,10 @@ kubectl apply -f ./load_test
 ![Autoscale Demo](media/k8s-autoscale.webp)
 
 ## Links Úteis ##
-- https://kubernetes.io/docs/home/
-- https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough
-- https://helm.sh/
-- https://ramitsurana.gitbook.io/awesome-kubernetes/
-- https://collabnix.github.io/kubelabs/
+- https://kubernetes.io/docs/home/ (Documentação oficial do k8s)
+- https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough (Documentação sobre o k8s feita pela Microsoft)
+- https://helm.sh/ (Instalador de aplicações para o k8s)
+- https://ramitsurana.gitbook.io/awesome-kubernetes/ (Vários links com ferramentas para usar com o k8s)
+- https://collabnix.github.io/kubelabs/ (Detalhamento de vários objetos do k8s)
+- https://www.katacoda.com/courses/kubernetes (Exercícios com comandos kubectl no navegador)
+
