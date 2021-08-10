@@ -23,12 +23,12 @@ az aks create `
   --resource-group $resourceGroup `
   --name $k8sClusterName `
   --kubernetes-version $k8sVersion `
-  --node-count 2 `
+  --node-count 1 `
   --vm-set-type VirtualMachineScaleSets `
   --load-balancer-sku standard `
   --enable-cluster-autoscaler `
   --node-vm-size $vmSize `
-  --min-count 2 --max-count 3 `
+  --min-count 1 --max-count 2 `
   --enable-addons http_application_routing
 # --attach-acr <acrName> # if using Azure Arc
 # only if .ssh is mapped into the container
@@ -53,7 +53,7 @@ az aks stop --name $k8sClusterName --resource-group $resourceGroup
 # Start a previous stopped cluster
 az aks start --name $k8sClusterName --resource-group $resourceGroup
 
-# Delete the Cluster ( https://docs.microsoft.com/en-us/azure/aks/start-stop-cluster )
+# Delete the Cluster
 #  => cannot be restored
 az aks delete --name $k8sClusterName --resource-group $resourceGroup --yes
 

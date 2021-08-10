@@ -8,7 +8,7 @@ metadata:
 spec:
   # ingressClassName: addon-http-application-routing #  k8s version >= 1.18.0
   rules:
-  - host: example.7d720bf1eb554631aa87.brazilsouth.aksapp.io
+  - host: example.e15b05db840144838730.brazilsouth.aksapp.io
     http:
       paths:
       - path: /

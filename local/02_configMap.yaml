@@ -7,6 +7,15 @@ kind: ConfigMap
 metadata:
   name: example-configmap
   namespace: example-ns
+  ## Labels comuns - https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+  labels:
+    app.kubernetes.io/name: example-app
+    app.kubernetes.io/instance: example-app-1
+    app.kubernetes.io/version: "4.0.0"
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: example-app
+    app.kubernetes.io/managed-by: manual
+    app.kubernetes.io/created-by: manual
 data:
   appsettings.Production.json: |
     {
@@ -41,6 +50,15 @@ kind: Secret
 metadata:
   name: example-secret
   namespace: example-ns
+  ## Labels comuns - https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+  labels:
+    app.kubernetes.io/name: example-app
+    app.kubernetes.io/instance: example-app-1
+    app.kubernetes.io/version: "4.0.0"
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: example-app
+    app.kubernetes.io/managed-by: manual
+    app.kubernetes.io/created-by: manual
 type: Opaque
 data:
   ## segredo é representado em base64. Contém usuario e senha test/test

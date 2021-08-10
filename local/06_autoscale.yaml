@@ -6,6 +6,16 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: example-hpa
   namespace: example-ns
+  labels:
+    ## Labels comuns - https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+    app.kubernetes.io/name: example-app
+    app.kubernetes.io/instance: example-app-1
+    app.kubernetes.io/version: "4.0.0"
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: example-app
+    app.kubernetes.io/managed-by: manual
+    app.kubernetes.io/created-by: manual
+
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

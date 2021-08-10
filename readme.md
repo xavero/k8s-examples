@@ -1,6 +1,6 @@
 # Kubernetes (k8s) #
 
-Esse repositório possui alguns exemplos e links para começar a estudar sobre Kubernetes - também abreviado como k8s
+Esse repositório possui alguns exemplos e links para começar a estudar sobre Kubernetes - abreviado como k8s
 
 > :warning: **NÃO USAR OS EXEMPLOS EM PRODUÇÃO!**
 
@@ -63,7 +63,7 @@ Interfaces gráficas que podem ser usadas com o k8s:
 - Menor unidade que o k8s controla
 - Uma aplicação por Pod!
 - Configuração de configuração, segredos, healthcheck, volumes, limites de memória, cpu, volumes, etc.
-- O Pod normalmente só tem 1 container, porém é possível subir outros  containers no mesmo Pod. Exemplos:, service mesh, Reload de Configuração, Proxy, Controle de Acesso (Autenticação), etc)
+- O Pod normalmente só tem 1 container, porém é possível subir outros containers no mesmo Pod. Exemplos:, service mesh, Reload de Configuração, Proxy, Controle de Acesso (Autenticação), etc)
 
 ### Deployment ###
 - Controla a quantidade de Pods da aplicação (Replicas)
@@ -98,7 +98,7 @@ Interfaces gráficas que podem ser usadas com o k8s:
 - Todas as outras configurações do Deployment
 - Normalmente usado com aplicações de infra como coletores com logs, plugins de rede ou de storage
 
-### Comandos úteis ###
+## Comandos úteis ##
 
 ```powershell
 # Aplicar uma configuração de um objeto no cluster k8s - deploymnet, service, ingress, etc)
@@ -126,6 +126,8 @@ kubectl delete deployment nome-deployment
 kubectl delete service nome-service
 ```
 
+Outros comandos úteis no arquivo [k8s-common-commands.md](./k8s-common-commands.md)
+
 ## Arquivos de Demonstração ## 
 
 Exemplos preparados para usar com o k8s do Docker Desktop. Pode ser necessário ajustes para usar em outros clusters.
@@ -140,6 +142,8 @@ Instalação do stack de monitoramento de memória, cpu, rede e etc (Prometheus,
 ```
 
 ### Deployment de Pods de Exemplos ###
+
+Os arquivos na pasta local possuem comentários detalhando suas funcionalidades.
 
 ```powershell
 # Deploy de pods no Docker Desktop. 

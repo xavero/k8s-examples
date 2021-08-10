@@ -1,5 +1,6 @@
+# k8s - Comandos básicos #
 
-**Reference: https://kubernetes.io/docs/reference/kubectl/cheatsheet/**
+**Referência: https://kubernetes.io/docs/reference/kubectl/cheatsheet/**
 
 ```bash
 kubectl apply -f ./my-manifest.yaml            # create resource(s)

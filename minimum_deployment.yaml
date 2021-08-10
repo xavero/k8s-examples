@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: example
-  replicas: 2 # quantidade de pods que devem ser criados
+  replicas: 4 # quantidade de pods que devem ser criados
   template:
     metadata:
       labels:

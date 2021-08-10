@@ -6,6 +6,15 @@ kind: Deployment
 metadata:
   name: example-deployment
   namespace: example-ns
+  ## Labels comuns - https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+  labels:
+    app.kubernetes.io/name: example-app
+    app.kubernetes.io/instance: example-app-1
+    app.kubernetes.io/version: "4.0.0"
+    app.kubernetes.io/component: api
+    app.kubernetes.io/part-of: example-app
+    app.kubernetes.io/managed-by: manual
+    app.kubernetes.io/created-by: manual
 spec:
   selector:
     ## Indica quais Pods este Deployment controla
@@ -15,6 +24,7 @@ spec:
   ## quantidade de pods que devem ser criados. Ignorado quando se usa o HorizontalPodAutoscaler
   replicas: 1 
 
+  ## template da definição dos Pods
   template:
     metadata:
       ## labels da aplicação. Usado para filtrar os Pods que fazem parte do Deployment
@@ -34,7 +44,7 @@ spec:
         configMap: 
           name: example-configmap
       
-      ## exemplo usando um arquivo que foi decalrado como Secret
+      ## exemplo usando um arquivo que foi declarado como Secret
       - name: secrets
         secret: 
           secretName: example-secret
@@ -49,7 +59,8 @@ spec:
         - name: http
           containerPort: 80
         
-        ## rota que o k8s usará para checar se a aplicação está funcionando
+        ## rota que o k8s usará para checar se a aplicação está funcionando. 
+        ## Pode ser substituído por um comando a ser executado dentro do container.
         livenessProbe:
           httpGet:
             path: /healthz
@@ -77,6 +88,10 @@ spec:
         ## configurações de variáveis de ambiente
         env:
         
+        ## declarando o valor neste arquivo
+        - name: EXAMPLE_VAR
+          value: example_value
+
         ## usando um valor do configMap
         - name: ASPNETCORE_URLS
           valueFrom:
@@ -84,11 +99,7 @@ spec:
               name: example-configmap
               key: listen_url
         
-        ## declarando o valor que será usado nesse arquivo mesmo.
-        - name: EXAMPLE_VAR
-          value: example_value
-
-        ## configurações de volumes/persistência
+        ## configurações de volumes/persistência usando ConfigMap ou Secrets
         volumeMounts:
           ## é possível mapear para dentro do container um único arquivo...
           - name: config
@@ -96,5 +107,4 @@ spec:
             mountPath: /app/appsettings.Production.json
           ##  ou uma pasta inteira
           - name: secrets
-            # subPath: users
             mountPath: /secrets

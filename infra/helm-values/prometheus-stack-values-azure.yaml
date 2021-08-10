@@ -14,7 +14,7 @@ alertmanager:
     ## Hosts must be provided if Ingress is enabled.
     ##
     hosts:
-      - alertmanager.7d720bf1eb554631aa87.brazilsouth.aksapp.io
+      - alertmanager.e15b05db840144838730.brazilsouth.aksapp.io
 
 ## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
 ##
@@ -32,7 +32,7 @@ grafana:
     ## Must be provided if Ingress is enable.
     ##
     hosts:
-      - grafana.7d720bf1eb554631aa87.brazilsouth.aksapp.io
+      - grafana.e15b05db840144838730.brazilsouth.aksapp.io
 
 ## Deploy a Prometheus instance
 ##
@@ -48,7 +48,7 @@ prometheus:
     ## Must be provided if Ingress is enabled.
     ##
     hosts:
-      - prometheus.7d720bf1eb554631aa87.brazilsouth.aksapp.io
+      - prometheus.e15b05db840144838730.brazilsouth.aksapp.io
 
 prometheus-node-exporter:
 #  namespaceOverride: "monitoring"
